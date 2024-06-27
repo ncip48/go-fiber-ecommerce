@@ -44,6 +44,7 @@ func LoginAction(c *fiber.Ctx) error {
 	// Create the Claims
 	claims := jwt.MapClaims{
 		"user": &user,
+		"uid":  user.ID,
 		"exp":  time.Now().Add(time.Hour * 72).Unix(),
 	}
 
@@ -64,6 +65,11 @@ func LoginAction(c *fiber.Ctx) error {
 func GetProfile(c *fiber.Ctx) error {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	u := claims["user"]
-	return utils.ResponseJson(c, true, "Success get profile", u)
+	id := claims["uid"]
+
+	acc := entities.Profile{}
+
+	config.Database.Model(&entities.User{}).Find(&acc, "ID = ?", id)
+
+	return utils.ResponseJson(c, true, "Success get profile", &acc)
 }

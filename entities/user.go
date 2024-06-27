@@ -12,3 +12,12 @@ type User struct {
 	Gender   int    `json:"gender"`
 	IsActive bool   `json:"is_active" gorm:"default:true"`
 }
+
+type Profile struct {
+	ID       uint   `gorm:"primarykey"`
+	Username string `json:"username"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Gender   int    `json:"gender"`
+	IsActive bool   `json:"is_active"`
+}
